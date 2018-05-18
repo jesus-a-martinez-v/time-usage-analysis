@@ -15,4 +15,8 @@ case class TimeUsageRow(working: String,
                         age: String,
                         primaryNeeds: Double,
                         work: Double,
-                        other: Double)
+                        other: Double) {
+  require(Set("working", "not working").contains(working))
+  require(Set("male", "female").contains(sex))
+  require(Set("young", "active", "elder").contains(age))
+}
