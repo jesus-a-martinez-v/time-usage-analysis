@@ -6,6 +6,7 @@ Our goal is to identify three groups of activities:
 * primary needs (sleeping and eating),
 * work,
 * other (leisure).
+
 And then to observe how do people allocate their time between these three kinds of activities, and if we can see differences
 between men and women, employed and unemployed people, and young (less than 22 years old), active (between 22 and 55 years old) and elder people.
 
