@@ -5,8 +5,7 @@ import java.nio.file.Paths
 import org.apache.spark.sql._
 import org.apache.spark.sql.types._
 
-/** Main class */
-object TimeUsage {
+object TimeUsage extends App {
 
   import org.apache.spark.sql.SparkSession
   import org.apache.spark.sql.functions._
@@ -21,10 +20,7 @@ object TimeUsage {
   // For implicit conversions like converting RDDs to DataFrames
   import spark.implicits._
 
-  /** Main function */
-  def main(args: Array[String]): Unit = {
-    timeUsageByLifePeriod()
-  }
+  timeUsageByLifePeriod()
 
   def timeUsageByLifePeriod(): Unit = {
     val (columns, initDf) = read("/timeusage/atussum.csv")
@@ -45,7 +41,8 @@ object TimeUsage {
     val data =
       rdd
         .mapPartitionsWithIndex((i, it) => if (i == 0) it.drop(1) else it) // skip the header line
-        .map(_.split(",").to[List])
+        .map(_.split(",")
+        .to[List])
         .map(row)
 
     val dataFrame =
@@ -104,8 +101,10 @@ object TimeUsage {
     val otherActivitiesColumnsPrefixes = List("t02", "t04", "t06", "t07", "t08", "t09", "t10", "t12", "t13", "t14",
       "t15", "t16", "t18")
     val otherActivitiesColumns = columnNames.collect {
-      case columnName if otherActivitiesColumnsPrefixes.exists(columnName.startsWith) && (!columnName.startsWith("t18")
-        || List("t1805", "t1803", "t1801").forall(prefix => !columnName.startsWith(prefix))) => new Column(columnName)
+      case columnName
+        if otherActivitiesColumnsPrefixes.exists(columnName.startsWith)
+          && (!columnName.startsWith("t18")
+          || List("t1805", "t1803", "t1801").forall(prefix => !columnName.startsWith(prefix))) => new Column(columnName)
     }
 
     (primaryNeedsColumns, workingActivitiesColumns, otherActivitiesColumns)
@@ -199,10 +198,11 @@ object TimeUsage {
     * @param viewName Name of the SQL view to use
     */
   def timeUsageGroupedSqlQuery(viewName: String): String = {
-    s"""SELECT working, sex, age, ROUND(AVG(primaryNeeds), 1) AS primaryNeeds, ROUND(AVG(work), 1) AS work, ROUND(AVG(other), 1) AS other
-      |FROM $viewName
-      |GROUP BY working, sex, age
-      |ORDER BY working, sex, age""".stripMargin
+    s"""
+       |SELECT working, sex, age, ROUND(AVG(primaryNeeds), 1) AS primaryNeeds, ROUND(AVG(work), 1) AS work, ROUND(AVG(other), 1) AS other
+       |FROM $viewName
+       |GROUP BY working, sex, age
+       |ORDER BY working, sex, age""".stripMargin
   }
 
   /**

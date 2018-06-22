@@ -1,4 +1,7 @@
-# time-usage-analysis
+# Time Usage Analysis
+
+![](http://education.abc.net.au/splash-image-servlet/mvcservlet/imageServlet/profile2/ABCTOP146)
+
 Analysis of how people use their time among several categories of activities. 
 
 Our goal is to identify three groups of activities:
